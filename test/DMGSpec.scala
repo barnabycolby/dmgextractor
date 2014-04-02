@@ -10,9 +10,15 @@ class DMGSpec extends UnitSpec {
 		}
 	}
 
-	it should "throw NoSuchFileException if an empty filename is given" in {
+	it should "throw InvalidDMGFileException if an empty filename is given" in {
 		a [InvalidDMGFileException] should be thrownBy {
 			new DMG("")
+		}
+	}
+
+	it should "throw InvaildDMGFileException if an invalid filename is given" in {
+		a [InvalidDMGFileException] should be thrownBy {
+			new DMG("/%&£fdjkasl;$")
 		}
 	}
 }
