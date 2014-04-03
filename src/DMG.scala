@@ -9,6 +9,7 @@ import java.io.FileNotFoundException
 /**
  * Parses a DMG (Apple Disk Image) file and stores it's structure and data internally
  *
+ * @param filePath The path of the dmg file
  * @throws IllegalArgumentException If given filename is null
  * @throws InvalidDMGSourceException If given filename is invalid, or file is too short to contain a valid DMG header
  *
