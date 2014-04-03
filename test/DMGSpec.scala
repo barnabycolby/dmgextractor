@@ -24,6 +24,13 @@ class DMGSpec extends UnitSpec {
 		assert(exception.getType == InvalidDMGFileExceptionType.FileNotFound)
 	}
 
+	it should "throw InvalidDMGFileException of type Directory if the path of a directory is given" in {
+		val exception = intercept[InvalidDMGFileException] {
+			new DMG("testFiles/aDirectory")
+		}
+		assert(exception.getType == InvalidDMGFileExceptionType.Directory)
+	}
+
 	it should "throw InvalidDMGFileException of type TooShort if the file length is less than the length of the header (512 bytes)" in {
 		val exception = intercept[InvalidDMGFileException] {
 			new DMG("testFiles/notLongEnough.dmg")

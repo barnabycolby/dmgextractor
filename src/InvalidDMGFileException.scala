@@ -2,7 +2,7 @@ package DMGExtractor
 
 object InvalidDMGFileExceptionType extends Enumeration {
 	type InvalidDMGFileExceptionType = Value
-	val EmptyFilePath, TooShort, FileNotFound, NoKolyHeader = Value
+	val EmptyFilePath, TooShort, FileNotFound, Directory = Value
 }
 import InvalidDMGFileExceptionType._
 
@@ -11,7 +11,7 @@ class InvalidDMGFileException(exceptionType: InvalidDMGFileExceptionType) extend
 		case EmptyFilePath => "File path was empty"
 		case TooShort			 => "File is too short to contain a DMG header"
 		case FileNotFound  => "File path referred to a non-existant file"
-		case NoKolyHeader  => "File did not contain a KOLY header"
+		case Directory	   => "File path referred to a directory"
 	}
 
 	/**

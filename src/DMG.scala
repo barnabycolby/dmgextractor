@@ -49,13 +49,20 @@ class DMG(val filePath: String) {
 	 * Retrieves the file referred to by the filename
 	 * @param filePath The path of the file
 	 * @return A file object that refers to the file
-	 * @throws InvalidDMGSourceException If the fileName refers to a non-existant file
+	 * @throws InvalidDMGSourceException If the fileName refers to a non-existant file, or a directory
 	 */
 	def retrieveFile(filePath: String): File = {
 		val file = new File(filePath)
+		// Check whether the file exists
 		if (!file.exists) {
 			throw new InvalidDMGFileException(InvalidDMGFileExceptionType.FileNotFound)
 		}
+
+		// Check whether the path referred to a directory
+		if (file.isDirectory()) {
+			throw new InvalidDMGFileException(InvalidDMGFileExceptionType.Directory)
+		}
+
 		return file
 	}
 }
