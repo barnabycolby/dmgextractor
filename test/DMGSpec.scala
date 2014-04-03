@@ -4,20 +4,20 @@ import org.scalatest._
 
 class DMGSpec extends UnitSpec {
 	
-	"A DMG" should "throw IllegalArgumentException if no filename is given" in {
+	"A DMG" should "throw IllegalArgumentException if no path is given" in {
 		a [IllegalArgumentException] should be thrownBy {
 			new DMG(null)
 		}
 	}
 
-	it should "throw InvalidDMGFileException of type EmptyFilePath if an empty filename is given" in {
+	it should "throw InvalidDMGFileException of type EmptyFilePath if an empty path is given" in {
 		val exception = intercept[InvalidDMGFileException] {
 			new DMG("")
 		}
 		assert(exception.getType == InvalidDMGFileExceptionType.EmptyFilePath)
 	}
 
-	it should "throw InvalidDMGFileException of type FileNotFound if an invalid filename is given" in {
+	it should "throw InvalidDMGFileException of type FileNotFound if an invalid path is given" in {
 		val exception = intercept[InvalidDMGFileException] {
 			new DMG("/%&£fdjkasl;$")
 		}
