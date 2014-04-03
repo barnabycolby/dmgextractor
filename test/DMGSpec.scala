@@ -10,15 +10,24 @@ class DMGSpec extends UnitSpec {
 		}
 	}
 
-	it should "throw InvalidDMGFileException if an empty filename is given" in {
-		a [InvalidDMGFileException] should be thrownBy {
+	it should "throw InvalidDMGFileException of type EmptyFilePath if an empty filename is given" in {
+		val exception = intercept[InvalidDMGFileException] {
 			new DMG("")
 		}
+		assert(exception.getType == InvalidDMGFileExceptionType.EmptyFilePath)
 	}
 
-	it should "throw InvaildDMGFileException if an invalid filename is given" in {
-		a [InvalidDMGFileException] should be thrownBy {
+	it should "throw InvalidDMGFileException of type FileNotFound if an invalid filename is given" in {
+		val exception = intercept[InvalidDMGFileException] {
 			new DMG("/%&£fdjkasl;$")
 		}
+		assert(exception.getType == InvalidDMGFileExceptionType.FileNotFound)
+	}
+
+	it should "throw InvalidDMGFileException of type TooShort if the file length is less than the length of the header (512 bytes)" in {
+		val exception = intercept[InvalidDMGFileException] {
+			new DMG("testFiles/notLongEnough.dmg")
+		}
+		assert(exception.getType == InvalidDMGFileExceptionType.TooShort)
 	}
 }

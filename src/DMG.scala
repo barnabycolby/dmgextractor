@@ -1,7 +1,7 @@
 package DMGExtractor
 
 // Used to store the DMG file object
-import scala.io.Source
+import java.io.File
 
 // Thrown when the specified file cannot be found
 import java.io.FileNotFoundException
@@ -10,7 +10,7 @@ import java.io.FileNotFoundException
  * Parses a DMG (Apple Disk Image) file and stores it's structure and data internally
  *
  * @throws IllegalArgumentException If given filename is null
- * @throws InvalidDMGSourceException If given filename is invalid
+ * @throws InvalidDMGSourceException If given filename is invalid, or file is too short to contain a valid DMG header
  *
  * @author Barnaby Colby
  */
@@ -18,18 +18,23 @@ class DMG(val filePath: String) {
 	// Deal with the three possible cases for the filename
 	filePath match {
 		case null => throw new IllegalArgumentException("File path was null")
-		case ""   => throw new InvalidDMGFileException("File path was empty")
-		case _		=> this.file = this.retrieveSource(filePath)
+		case ""   => throw new InvalidDMGFileException(InvalidDMGFileExceptionType.EmptyFilePath)
+		case _		=> this.file = this.retrieveFile(filePath)
+	}
+
+	// Check whether the file is too short to contain a header
+	if (this.file.length < 512) {
+		throw new InvalidDMGFileException(InvalidDMGFileExceptionType.TooShort)
 	}
 
 	// Stores the object relating to the DMG file
-	private var _file: Source = _
+	private var _file: File = _
 
 	/**
 	 * Sets the file object, which stores information about the DMG file
 	 * @param file The new file object
 	 */
-	def file_=(file: Source) {
+	def file_=(file: File) {
 		this._file = file
 	}
 
@@ -37,7 +42,7 @@ class DMG(val filePath: String) {
 	 * Gets the file object, which stores information about the DMG file
 	 * @return The file object
 	 */
-	def file: Source = this._file
+	def file: File = this._file
 
 	/**
 	 * Retrieves the file referred to by the filename
@@ -45,12 +50,11 @@ class DMG(val filePath: String) {
 	 * @return A file object that refers to the file
 	 * @throws InvalidDMGSourceException If the fileName refers to a non-existant file
 	 */
-	def retrieveSource(filePath: String): Source = {
-		try {
-			Source.fromFile(filePath)
+	def retrieveFile(filePath: String): File = {
+		val file = new File(filePath)
+		if (!file.exists) {
+			throw new InvalidDMGFileException(InvalidDMGFileExceptionType.FileNotFound)
 		}
-		catch {
-			case ex: FileNotFoundException => throw new InvalidDMGFileException("File path referred to a non-existant file")
-		}
+		return file
 	}
 }
