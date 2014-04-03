@@ -12,9 +12,16 @@ object DMGExtractor {
 			this.usage
 		}
 
-		// Create a DMG class to represent it
-		val filename = args(0);
-		new DMG(filename);
+		try {
+			// Create a DMG class to represent it
+			val filename = args(0);
+			new DMG(filename);
+		}
+		catch {
+			case ex: Exception => {
+				println("Something went wrong: " + ex.getMessage)
+			}
+		}
 	}
 
   /** Prints usage information about the program */
