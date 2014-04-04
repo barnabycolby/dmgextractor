@@ -6,6 +6,9 @@ import java.io.File
 // Thrown when the specified file cannot be found
 import java.io.FileNotFoundException
 
+// Used to create the header
+import java.io.RandomAccessFile
+
 /**
  * Parses a DMG (Apple Disk Image) file and stores it's structure and data internally
  *
@@ -28,8 +31,14 @@ class DMG(val filePath: String) {
 		throw new InvalidDMGFileException(InvalidDMGFileExceptionType.TooShort)
 	}
 
+	// Parse the header
+	this.header = new Header(new RandomAccessFile(this.file, "r"))
+
 	// Stores the object relating to the DMG file
 	private var _file: File = _
+
+	// Stores the object relating to the header of the DMG file
+	private var _header: Header = _
 
 	/**
 	 * Sets the file object, which stores information about the DMG file
@@ -44,6 +53,20 @@ class DMG(val filePath: String) {
 	 * @return The file object
 	 */
 	def file: File = this._file
+
+	/**
+	 * Sets the header object, which stores information about the files DMG header
+	 * @param header The new header object
+	 */
+	def header_=(header: Header) {
+		this._header = header
+	}
+
+	/**
+	 * Gets the header object, which stores information about the files DMG header
+	 * @return The header object
+	 */
+	def header: Header = this._header
 
 	/**
 	 * Retrieves the file referred to by the filename
