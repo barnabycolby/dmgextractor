@@ -7,21 +7,21 @@ class HeaderSpec extends UnitSpec {
 	
 	"A Header" should "throw InvalidHeaderException, of type Missing, if the file does not contain a KOLY header" in {
 		val exception = intercept[InvalidHeaderException] {
-				new Header(this.getHeaderBytesFrom("testFiles/noKolyHeader.dmg"))
+				new Header(this.getHeaderBytesFrom("testFiles/header/noKolyHeader.dmg"))
 		}
 		assert(exception.getType == InvalidHeaderExceptionType.Missing)
 	}
 
 	it should "throw InvalidHeaderException, of type WrongVersion, if the header is not of version 4" in {
 		val exception = intercept[InvalidHeaderException] {
-				new Header(this.getHeaderBytesFrom("testFiles/wrongVersion.dmg"))
+				new Header(this.getHeaderBytesFrom("testFiles/header/wrongVersion.dmg"))
 		}
 		assert(exception.getType == InvalidHeaderExceptionType.WrongVersion)
 	}
 
 	it should "throw InvalidHeaderException, of type WrongLength, if the headers length value is not equal to 512" in {
 		val exception = intercept[InvalidHeaderException] {
-				new Header(this.getHeaderBytesFrom("testFiles/wrongLengthValue.dmg"))
+				new Header(this.getHeaderBytesFrom("testFiles/header/wrongLengthValue.dmg"))
 		}
 		assert(exception.getType == InvalidHeaderExceptionType.WrongLength)
 	}
