@@ -13,6 +13,15 @@ class HeaderSpec extends UnitSpec {
 		assert(exception.getType == InvalidHeaderExceptionType.Missing)
 	}
 
+	it should "throw InvalidHeaderException, of type TooShort, if the header bytes array is not long enough" in {
+		val exception = intercept[InvalidHeaderException] {
+			val headerBytes = this.getHeaderBytesFrom("testFiles/genuine.dmg")
+			val headerBytesSubset = headerBytes.slice(0, 325)
+			new Header(headerBytesSubset)
+		}
+		assert(exception.getType == InvalidHeaderExceptionType.TooShort)
+	}
+
 	it should "throw InvalidHeaderException, of type WrongVersion, if the header is not of version 4" in {
 		val exception = intercept[InvalidHeaderException] {
 				new Header(this.getHeaderBytesFrom("testFiles/header/wrongVersion.dmg"))

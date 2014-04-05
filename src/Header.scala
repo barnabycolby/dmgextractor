@@ -15,6 +15,11 @@ import java.math.BigInteger
  * @author Barnaby Colby
  */
 class Header(val headerBytes: Array[Byte]) {
+	// Check that the header is not too short
+	if (headerBytes.length != 512) {
+		throw new InvalidHeaderException(InvalidHeaderExceptionType.TooShort)
+	}
+
 	// The first 4 bytes should contain the magic KOLY value
 	// Construct the expected and actual magic
 	val expectedMagic: Array[Byte] = Array(107, 111, 108, 121)
