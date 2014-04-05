@@ -37,7 +37,7 @@ class HeaderSpec extends UnitSpec {
 	}
 
 	it should "parse the data fork offset correctly" in {
-		val header = new Header(this.getHeaderBytesFrom("testFiles/header/dataForkOffset119.dmg"))
+		val header = new Header(this.getHeaderBytesFrom("testFiles/header/dataForkOffset.dmg"))
 		val expectedValue = new BigInteger("119")
 		assert(header.dataForkOffset == expectedValue)
 	}
@@ -49,7 +49,7 @@ class HeaderSpec extends UnitSpec {
 	}
 
 	it should "parse the resource fork offset correctly" in {
-		val header = new Header(this.getHeaderBytesFrom("testFiles/header/resourceForkOffset13682.dmg"))
+		val header = new Header(this.getHeaderBytesFrom("testFiles/header/resourceForkOffset.dmg"))
 		val expectedValue = new BigInteger("13682")
 		assert(header.resourceForkOffset == expectedValue)
 	}
