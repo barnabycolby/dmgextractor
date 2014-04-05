@@ -32,10 +32,10 @@ class DMG(val filePath: String) {
 	}
 
 	// Parse the header
-	this.header = new Header(new RandomAccessFile(this.file, "r"))
+	this.header = new Header(this.getHeaderBytes)
 
 	// Stores the object relating to the DMG file
-	private var _file: File = _
+	private var _file: RandomAccessFile = _
 
 	// Stores the object relating to the header of the DMG file
 	private var _header: Header = _
@@ -44,7 +44,7 @@ class DMG(val filePath: String) {
 	 * Sets the file object, which stores information about the DMG file
 	 * @param file The new file object
 	 */
-	def file_=(file: File) {
+	def file_=(file: RandomAccessFile) {
 		this._file = file
 	}
 
@@ -52,7 +52,7 @@ class DMG(val filePath: String) {
 	 * Gets the file object, which stores information about the DMG file
 	 * @return The file object
 	 */
-	def file: File = this._file
+	def file: RandomAccessFile = this._file
 
 	/**
 	 * Sets the header object, which stores information about the files DMG header
@@ -74,7 +74,7 @@ class DMG(val filePath: String) {
 	 * @return A file object that refers to the file
 	 * @throws InvalidDMGSourceException If the fileName refers to a non-existant file, or a directory
 	 */
-	def retrieveFile(filePath: String): File = {
+	def retrieveFile(filePath: String): RandomAccessFile = {
 		val file = new File(filePath)
 		// Check whether the file exists
 		if (!file.exists) {
@@ -86,6 +86,24 @@ class DMG(val filePath: String) {
 			throw new InvalidDMGFileException(InvalidDMGFileExceptionType.Directory)
 		}
 
-		return file
+		return new RandomAccessFile(file, "r")
 	}
+
+	/**
+	 * Gets the set of bytes where the header should be
+	 * @return The set of bytes that should contain the header
+	 */
+	def getHeaderBytes: Array[Byte] = {
+		// Work out the position that we should access the header from
+		val sizeOfHeader = 512
+		val seekPosition = this.file.length - sizeOfHeader
+
+		// Read the header bytes
+		var header = new Array[Byte](sizeOfHeader)
+		this.file.seek(seekPosition)
+		this.file.read(header, 0, 512)
+
+		return header
+	}
+
 }
