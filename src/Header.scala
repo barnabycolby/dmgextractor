@@ -1,6 +1,7 @@
 package DMGExtractor
 
-import java.io.RandomAccessFile
+// Used to convert version byte array to an Int
+import java.nio.ByteBuffer
 
 /**
  * Parses the header of a DMG file and stores it's data
@@ -13,12 +14,19 @@ import java.io.RandomAccessFile
 class Header(val headerBytes: Array[Byte]) {
 	// The first 4 bytes should contain the magic KOLY value
 	// Construct the expected and actual magic
-	var expectedMagic: Array[Byte] = Array(107, 111, 108, 121)
-	var actualMagic = headerBytes.slice(0, 4)
+	val expectedMagic: Array[Byte] = Array(107, 111, 108, 121)
+	val actualMagic = headerBytes.slice(0, 4)
 
 	// Check whether they're equal
 	if (!actualMagic.sameElements(expectedMagic)) {
-		println("["+actualMagic(0)+","+actualMagic(1)+","+actualMagic(2)+","+actualMagic(3)+"]")
 		throw new InvalidHeaderException(InvalidHeaderExceptionType.Missing)
+	}
+
+	// Check that the version is the expected value, 4
+	val expectedVersion = 4
+	val actualVersionBytes = headerBytes.slice(4, 8)
+	val actualVersion = ByteBuffer.wrap(actualVersionBytes).getInt
+	if (actualVersion != expectedVersion) {
+		throw new InvalidHeaderException(InvalidHeaderExceptionType.WrongVersion)
 	}
 }

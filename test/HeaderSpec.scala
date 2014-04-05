@@ -12,6 +12,13 @@ class HeaderSpec extends UnitSpec {
 		assert(exception.getType == InvalidHeaderExceptionType.Missing)
 	}
 
+	it should "throw InvalidHeaderException, of type WrongVersion, if the header is not of version 4" in {
+		val exception = intercept[InvalidHeaderException] {
+				new Header(this.getHeaderBytesFrom("testFiles/wrongVersion.dmg"))
+		}
+		assert(exception.getType == InvalidHeaderExceptionType.WrongVersion)
+	}
+
 	def getHeaderBytesFrom(filePath: String): Array[Byte] = {
 		val file = new File(filePath)
 		val randomAccessFile = new RandomAccessFile(file, "r")
