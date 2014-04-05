@@ -2,7 +2,7 @@ package DMGExtractor
 
 object InvalidHeaderExceptionType extends Enumeration {
 	type InvalidHeaderExceptionType = Value
-	val Missing, WrongVersion = Value
+	val Missing, WrongVersion, WrongLength = Value
 }
 import InvalidHeaderExceptionType._
 
@@ -10,6 +10,7 @@ class InvalidHeaderException(exceptionType: InvalidHeaderExceptionType) extends 
 	override def getMessage: String = exceptionType match {
 		case Missing 			=> "KOLY header was missing"
 		case WrongVersion => "The header is of the wrong version"
+		case WrongLength  => "The length value in the header is not the expected value"
 	}
 
 	/**

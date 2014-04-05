@@ -19,6 +19,13 @@ class HeaderSpec extends UnitSpec {
 		assert(exception.getType == InvalidHeaderExceptionType.WrongVersion)
 	}
 
+	it should "throw InvalidHeaderException, of type WrongLength, if the headers length value is not equal to 512" in {
+		val exception = intercept[InvalidHeaderException] {
+				new Header(this.getHeaderBytesFrom("testFiles/wrongLengthValue.dmg"))
+		}
+		assert(exception.getType == InvalidHeaderExceptionType.WrongLength)
+	}
+
 	/**
 	 * Gets the header bytes from the file referenced by the file path
 	 *

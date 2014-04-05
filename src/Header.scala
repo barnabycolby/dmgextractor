@@ -29,4 +29,12 @@ class Header(val headerBytes: Array[Byte]) {
 	if (actualVersion != expectedVersion) {
 		throw new InvalidHeaderException(InvalidHeaderExceptionType.WrongVersion)
 	}
+
+	// Check that the length value is the expected value, 512
+	val expectedLengthValue = 512
+	val actualLengthValueBytes = headerBytes.slice(8, 12)
+	val actualLengthValue = ByteBuffer.wrap(actualLengthValueBytes).getInt
+	if (actualLengthValue != expectedLengthValue) {
+		throw new InvalidHeaderException(InvalidHeaderExceptionType.WrongLength)
+	}
 }
