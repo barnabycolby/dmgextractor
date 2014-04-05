@@ -27,27 +27,44 @@ class Header(val headerBytes: Array[Byte]) {
 
 	// Check that the version is the expected value, 4
 	val expectedVersion = 4
-	val actualVersionBytes = headerBytes.slice(4, 8)
-	val actualVersion = ByteBuffer.wrap(actualVersionBytes).getInt
+	val actualVersion = get32BitIntStartingAt(4)
 	if (actualVersion != expectedVersion) {
 		throw new InvalidHeaderException(InvalidHeaderExceptionType.WrongVersion)
 	}
 
 	// Check that the length value is the expected value, 512
 	val expectedLengthValue = 512
-	val actualLengthValueBytes = headerBytes.slice(8, 12)
-	val actualLengthValue = ByteBuffer.wrap(actualLengthValueBytes).getInt
+	val actualLengthValue = get32BitIntStartingAt(8)
 	if (actualLengthValue != expectedLengthValue) {
 		throw new InvalidHeaderException(InvalidHeaderExceptionType.WrongLength)
 	}
 
 	// Get the data fork offset value from the file
-	val dataForkOffsetBytes = headerBytes.slice(24, 32)
-	this.dataForkOffset = new BigInteger(dataForkOffsetBytes)
+	this.dataForkOffset = getIntegerByByteRange(24, 32)
 
 	// Get the data fork length value from the file
-	val dataForkLengthBytes = headerBytes.slice(32, 40)
-	this.dataForkLength = new BigInteger(dataForkLengthBytes)
+	this.dataForkLength = getIntegerByByteRange(32, 40)
+
+	/**
+	 * Gets a 32 bit integer from the header that starts at the specified array index
+	 * @param start The index in the header bytes array that the integer starts at
+	 * @return The 32 bit integer
+	 */
+	private def get32BitIntStartingAt(start: Int): Int = {
+		val integerBytes = headerBytes.slice(start, start + 4)
+		return ByteBuffer.wrap(integerBytes).getInt
+	}
+
+	/**
+	 * Gets an integer from the header that is represented by the range specified
+	 * @param from The start of the range, inclusive
+	 * @param until The end of the range, exclusive
+	 * @return A BigInteger created from the sub array
+	 */
+	private def getIntegerByByteRange(from: Int, until: Int): BigInteger = {
+		val integerBytes = headerBytes.slice(from, until)
+		new BigInteger(integerBytes)
+	}
 
 	private var _dataForkOffset: BigInteger = _
 	private var _dataForkLength: BigInteger = _
