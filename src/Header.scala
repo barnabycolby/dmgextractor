@@ -3,6 +3,9 @@ package DMGExtractor
 // Used to convert version byte array to an Int
 import java.nio.ByteBuffer
 
+// Used to represent 64 bit unsigned integers
+import java.math.BigInteger
+
 /**
  * Parses the header of a DMG file and stores it's data
  *
@@ -36,5 +39,27 @@ class Header(val headerBytes: Array[Byte]) {
 	val actualLengthValue = ByteBuffer.wrap(actualLengthValueBytes).getInt
 	if (actualLengthValue != expectedLengthValue) {
 		throw new InvalidHeaderException(InvalidHeaderExceptionType.WrongLength)
+	}
+
+	// Get the data fork offset value from the file
+	val dataForkOffsetBytes = headerBytes.slice(24, 32)
+	this.dataForkOffset = new BigInteger(dataForkOffsetBytes)
+
+	private var _dataForkOffset: BigInteger = _
+
+	/**
+	 * Gets the data fork offset value
+	 *
+	 * Gets the data fork offset value, parsed from the file
+	 * @return The data fork offset value
+	 */
+	def dataForkOffset = this._dataForkOffset
+
+	/**
+	 * Sets the data fork offset value, parsed from the file
+	 * @param dataForkOffset The dataForkOffset value
+	 */
+	private def dataForkOffset_=(dataForkOffset: BigInteger) {
+		this._dataForkOffset = dataForkOffset
 	}
 }

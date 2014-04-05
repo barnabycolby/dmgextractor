@@ -2,6 +2,7 @@ package DMGExtractor
 
 import org.scalatest._
 import java.io._
+import java.math.BigInteger
 
 class HeaderSpec extends UnitSpec {
 	
@@ -24,6 +25,12 @@ class HeaderSpec extends UnitSpec {
 				new Header(this.getHeaderBytesFrom("testFiles/header/wrongLengthValue.dmg"))
 		}
 		assert(exception.getType == InvalidHeaderExceptionType.WrongLength)
+	}
+
+	it should "parse the data fork offset correctly" in {
+		val header = new Header(this.getHeaderBytesFrom("testFiles/header/dataForkOffset119.dmg"))
+		val expectedValue = new BigInteger("119")
+		assert(header.dataForkOffset == expectedValue)
 	}
 
 	/**
