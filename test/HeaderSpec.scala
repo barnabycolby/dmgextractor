@@ -5,13 +5,17 @@ import java.io._
 
 class HeaderSpec extends UnitSpec {
 	
-	"A Header" should "throw InvalidHeaderException if the file does not contain a KOLY header" in {
+	"A Header" should "throw InvalidHeaderException, of type Missing, if the file does not contain a KOLY header" in {
 		val exception = intercept[InvalidHeaderException] {
-				val file: File = new File("testFiles/noKolyHeader.dmg")
-				val randomAccessFile: RandomAccessFile = new RandomAccessFile(file, "r")
-				new Header(this.getHeaderBytesFrom(randomAccessFile))
+				new Header(this.getHeaderBytesFrom("testFiles/noKolyHeader.dmg"))
 		}
 		assert(exception.getType == InvalidHeaderExceptionType.Missing)
+	}
+
+	def getHeaderBytesFrom(filePath: String): Array[Byte] = {
+		val file = new File(filePath)
+		val randomAccessFile = new RandomAccessFile(file, "r")
+		return this.getHeaderBytesFrom(randomAccessFile)
 	}
 
 	def getHeaderBytesFrom(file: RandomAccessFile): Array[Byte] = {
