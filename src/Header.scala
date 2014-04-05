@@ -110,8 +110,16 @@ class Header(val headerBytes: Array[Byte]) {
 		this._dataForkLength = dataForkLength
 	}
 
+	/**
+	 * Gets the resource fork offset value, parsed from the file
+	 * @return The resource fork offset value
+	 */
 	def resourceForkOffset = this._resourceForkOffset
 
+	/**
+	 * Sets the resource fork offset value, parsed from the file
+	 * @param resourceForkOffset The resource fork offset value
+	 */
 	private def resourceForkOffset_=(resourceForkOffset: BigInteger) {
 		this._resourceForkOffset = resourceForkOffset
 	}
