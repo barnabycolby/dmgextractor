@@ -53,6 +53,9 @@ class Header(val headerBytes: Array[Byte]) {
 	// Get the resource fork offset value from the file
 	this.resourceForkOffset = getIntegerByByteRange(40, 48)
 
+	// Get the resource fork length value from the file
+	this.resourceForkLength = getIntegerByByteRange(48, 56)
+
 	/**
 	 * Gets a 32 bit integer from the header that starts at the specified array index
 	 * @param start The index in the header bytes array that the integer starts at
@@ -77,6 +80,7 @@ class Header(val headerBytes: Array[Byte]) {
 	private var _dataForkOffset: BigInteger = _
 	private var _dataForkLength: BigInteger = _
 	private var _resourceForkOffset: BigInteger = _
+	private var _resourceForkLength: BigInteger = _
 
 	/**
 	 * Gets the data fork offset value
@@ -122,5 +126,19 @@ class Header(val headerBytes: Array[Byte]) {
 	 */
 	private def resourceForkOffset_=(resourceForkOffset: BigInteger) {
 		this._resourceForkOffset = resourceForkOffset
+	}
+
+	/**
+	 * Gets the resource fork length value, parsed from the file
+	 * @return The resource fork length value
+	 */
+	def resourceForkLength = this._resourceForkLength
+
+	/**
+	 * Sets the resource fork length value, parsed from the file
+	 * @param resourceForkLength The resource fork length value
+	 */
+	private def resourceForkLength_=(resourceForkLength: BigInteger) {
+		this._resourceForkLength = resourceForkLength
 	}
 }
