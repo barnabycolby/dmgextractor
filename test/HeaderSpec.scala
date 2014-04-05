@@ -19,12 +19,28 @@ class HeaderSpec extends UnitSpec {
 		assert(exception.getType == InvalidHeaderExceptionType.WrongVersion)
 	}
 
+	/**
+	 * Gets the header bytes from the file referenced by the file path
+	 *
+	 * Gets the last 512 bytes from the file referenced by the file path, these bytes should contain the DMG file header
+   *
+	 * @param filePath The path of the file to get the header bytes from
+	 * @return A byte array containing the bytes of the header
+	 */
 	def getHeaderBytesFrom(filePath: String): Array[Byte] = {
 		val file = new File(filePath)
 		val randomAccessFile = new RandomAccessFile(file, "r")
 		return this.getHeaderBytesFrom(randomAccessFile)
 	}
 
+	/**
+	 * Gets the header bytes from the file referenced by the file object
+	 *
+	 * Gets the last 512 bytes from the file referenced by the file object, these bytes should contain the DMG file header
+	 *
+	 * @param file The file object to get the header bytes from
+	 * @return A byte array containing the bytes of the header
+	 */
 	def getHeaderBytesFrom(file: RandomAccessFile): Array[Byte] = {
 		// Work out the position that we should access the header from
 		val sizeOfHeader = 512
