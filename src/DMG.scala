@@ -44,7 +44,7 @@ class DMG(val filePath: String) {
 	 * Sets the file object, which stores information about the DMG file
 	 * @param file The new file object
 	 */
-	def file_=(file: RandomAccessFile) {
+	private def file_=(file: RandomAccessFile) {
 		this._file = file
 	}
 
@@ -58,7 +58,7 @@ class DMG(val filePath: String) {
 	 * Sets the header object, which stores information about the files DMG header
 	 * @param header The new header object
 	 */
-	def header_=(header: Header) {
+	private def header_=(header: Header) {
 		this._header = header
 	}
 
