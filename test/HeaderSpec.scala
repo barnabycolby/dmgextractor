@@ -33,6 +33,12 @@ class HeaderSpec extends UnitSpec {
 		assert(header.dataForkOffset == expectedValue)
 	}
 
+	it should "parse the data fork length correctly" in {
+		val header = new Header(this.getHeaderBytesFrom("testFiles/genuine.dmg"))
+		val expectedValue = new BigInteger("1081276")
+		assert(header.dataForkLength == expectedValue)
+	}
+
 	/**
 	 * Gets the header bytes from the file referenced by the file path
 	 *

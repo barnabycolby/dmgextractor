@@ -45,7 +45,12 @@ class Header(val headerBytes: Array[Byte]) {
 	val dataForkOffsetBytes = headerBytes.slice(24, 32)
 	this.dataForkOffset = new BigInteger(dataForkOffsetBytes)
 
+	// Get the data fork length value from the file
+	val dataForkLengthBytes = headerBytes.slice(32, 40)
+	this.dataForkLength = new BigInteger(dataForkLengthBytes)
+
 	private var _dataForkOffset: BigInteger = _
+	private var _dataForkLength: BigInteger = _
 
 	/**
 	 * Gets the data fork offset value
@@ -61,5 +66,21 @@ class Header(val headerBytes: Array[Byte]) {
 	 */
 	private def dataForkOffset_=(dataForkOffset: BigInteger) {
 		this._dataForkOffset = dataForkOffset
+	}
+
+	/**
+	 * Gets the data fork length value
+	 *
+	 * Gets the data fork length value, parsed from the file
+	 * @return The data fork length value
+	 */
+	def dataForkLength = this._dataForkLength
+
+	/**
+	 * Sets the data fork length value, parsed from the file
+	 * @param dataForkLength The dataForkLength value
+	 */
+	private def dataForkLength_=(dataForkLength: BigInteger) {
+		this._dataForkLength = dataForkLength
 	}
 }
