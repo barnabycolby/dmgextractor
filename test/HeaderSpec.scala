@@ -77,7 +77,7 @@ class HeaderSpec extends UnitSpec {
 	 * @param filePath The path of the file to get the header bytes from
 	 * @return A byte array containing the bytes of the header
 	 */
-	def getHeaderBytesFrom(filePath: String): Array[Byte] = {
+	private def getHeaderBytesFrom(filePath: String): Array[Byte] = {
 		val file = new File(filePath)
 		val randomAccessFile = new RandomAccessFile(file, "r")
 		return this.getHeaderBytesFrom(randomAccessFile)
@@ -91,7 +91,7 @@ class HeaderSpec extends UnitSpec {
 	 * @param file The file object to get the header bytes from
 	 * @return A byte array containing the bytes of the header
 	 */
-	def getHeaderBytesFrom(file: RandomAccessFile): Array[Byte] = {
+	private def getHeaderBytesFrom(file: RandomAccessFile): Array[Byte] = {
 		// Work out the position that we should access the header from
 		val sizeOfHeader = 512
 		val seekPosition = file.length - sizeOfHeader
