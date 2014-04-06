@@ -60,6 +60,12 @@ class HeaderSpec extends UnitSpec {
 		assert(header.resourceForkLength == expectedValue)
 	}
 
+	it should "parse the segment number correctly" in {
+		val header = this.instantiateHeaderForFile("testFiles/genuine.dmg")
+		val expectedValue = 1
+		assert(header.segmentNumber == expectedValue)
+	}
+
 	/**
 	 * Instantiates the header object for the specified file
 	 * @param The filepath of the file to instantiate the header object for
