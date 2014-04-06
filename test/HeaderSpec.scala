@@ -37,27 +37,36 @@ class HeaderSpec extends UnitSpec {
 	}
 
 	it should "parse the data fork offset correctly" in {
-		val header = new Header(this.getHeaderBytesFrom("testFiles/header/dataForkOffset.dmg"))
+		val header = this.instantiateHeaderForFile("testFiles/header/dataForkOffset.dmg")
 		val expectedValue = new BigInteger("119")
 		assert(header.dataForkOffset == expectedValue)
 	}
 
 	it should "parse the data fork length correctly" in {
-		val header = new Header(this.getHeaderBytesFrom("testFiles/genuine.dmg"))
+		val header = this.instantiateHeaderForFile("testFiles/genuine.dmg")
 		val expectedValue = new BigInteger("1081276")
 		assert(header.dataForkLength == expectedValue)
 	}
 
 	it should "parse the resource fork offset correctly" in {
-		val header = new Header(this.getHeaderBytesFrom("testFiles/header/resourceForkOffset.dmg"))
+		val header = this.instantiateHeaderForFile("testFiles/header/resourceForkOffset.dmg")
 		val expectedValue = new BigInteger("13682")
 		assert(header.resourceForkOffset == expectedValue)
 	}
 
 	it should "parse the resource fork length correctly" in {
-		val header = new Header(this.getHeaderBytesFrom("testFiles/header/resourceForkLength.dmg"))
+		val header = this.instantiateHeaderForFile("testFiles/header/resourceForkLength.dmg")
 		val expectedValue = new BigInteger("3342336")
 		assert(header.resourceForkLength == expectedValue)
+	}
+
+	/**
+	 * Instantiates the header object for the specified file
+	 * @param The filepath of the file to instantiate the header object for
+	 * @return The instantiated header object
+	 */
+	private def instantiateHeaderForFile(filePath: String): Header = {
+		new Header(this.getHeaderBytesFrom(filePath))
 	}
 
 	/**
